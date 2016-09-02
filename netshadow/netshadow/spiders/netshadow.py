@@ -13,7 +13,11 @@
 
 import scrapy
 
+
 class NetshadowSpider(scrapy.spiders.Spider):
+    def __init__(self):
+        pass
+
     name = "netshadow"
     allowed_domains = ["dmoz.org"]
     start_urls = [
