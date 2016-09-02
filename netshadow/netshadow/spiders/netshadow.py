@@ -12,6 +12,7 @@
 """
 
 import scrapy
+from netshadow.items import NetshadowItem
 
 
 class NetshadowSpider(scrapy.spiders.Spider):
@@ -19,13 +20,15 @@ class NetshadowSpider(scrapy.spiders.Spider):
         pass
 
     name = "netshadow"
-    allowed_domains = ["dmoz.org"]
+    allowed_domains = ["qq.com"]
     start_urls = [
-        "http://www.dmoz.org/Computers/Programming/Languages/Python/Books/",
-        "http://www.dmoz.org/Computers/Programming/Languages/Python/Resources/"
+        "http://www.qq.com/"
     ]
 
     def parse(self, response):
-        filename = response.url.split("/")[-2]
-        with open(filename, 'wb') as f:
-            f.write(response.body)
+        for sel in response.xpath('//ul/li'):
+            item = NetshadowItem()
+            item['title'] = sel.xpath('a/text()').extract()
+            item['link'] = sel.xpath('a/@href').extract()
+            item['desc'] = sel.xpath('text()').extract()
+            yield item
