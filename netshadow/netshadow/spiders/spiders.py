@@ -12,17 +12,19 @@
 """
 
 import scrapy
+from scrapy.spider import CrawlSpider, Rule
 from netshadow.items import NetshadowItem
 
 
-class NetshadowSpider(scrapy.spiders.Spider):
+class NetshadowSpider(CrawSpider):
     def __init__(self):
         pass
 
     name = "netshadow"
-    allowed_domains = ["qq.com"]
+    allowed_domains = ["qq.com", "iwhgao.com"]
     start_urls = [
-        "http://www.qq.com/"
+        "http://www.qq.com/",
+        "http://www.iwhgao.com/"
     ]
 
     def parse(self, response):
