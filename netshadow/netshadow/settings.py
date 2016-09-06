@@ -68,9 +68,9 @@ ROBOTSTXT_OBEY = True
 #    'netshadow.pipelines.SomePipeline': 300,
 #}
 
-ITEM_PIPELINES = {
-    'netshadow.pipelines.MysqlStorePipeline': 100,
-}
+#ITEM_PIPELINES = {
+#    'netshadow.pipelines.MysqlStorePipeline': 100,
+#}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
