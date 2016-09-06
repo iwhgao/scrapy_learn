@@ -12,7 +12,7 @@
 """
 
 from scrapy.linkextractors.sgml import SgmlLinkExtractor
-from scrapy.spider import CrawlSpider, Rule
+from scrapy.spiders import CrawlSpider, Rule
 from scrapy.selector import Selector
 from netshadow.items import NetshadowItem
 
@@ -27,12 +27,12 @@ class NetshadowSpider(CrawlSpider):
         "http://www.qq.com/",
     ]
 
-    rules = [
-        Rule(SgmlLinkExtractor(allow=('a/[0-9]+/[0-9]+\.htm'),
-                               restrict_xpaths=('//div[@class="C-Main-Article-QQ"]')),
-             callback='parse_item',
-             follow=True)
-    ]
+    #rules = [
+    #    Rule(SgmlLinkExtractor(allow=('a/[0-9]+/[0-9]+\.htm'),
+    #                           restrict_xpaths=('//div[@class="C-Main-Article-QQ"]')),
+    #         callback='parse_item',
+    #         follow=True)
+    #]
 
     def parse_item(self, response):
         item = NetshadowItem()
