@@ -18,8 +18,8 @@ from netshadow.items import NetshadowItem
 
 
 class NetshadowSpider(CrawlSpider):
-    def __init__(self):
-        pass
+    def __init__(self, *a, **kw):
+        super(NetshadowSpider, self).__init__(*a, **kw)
 
     name = "netshadow"
     allowed_domains = ["qq.com"]

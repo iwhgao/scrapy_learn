@@ -14,6 +14,6 @@ set -u
 MYSQL_BIN=mysql
 MYSQL_HOST=localhost
 MYSQL_USER=root
-MYSQL_PWD=
+MYSQL_PWD=''
 
 ${MYSQL_BIN} -u${MYSQL_USER} -p${MYSQL_PWD} -h${MYSQL_HOST} < ./db_table.sql
