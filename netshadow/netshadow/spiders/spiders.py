@@ -11,8 +11,9 @@
 @time: 2016/9/2 21:21
 """
 
-import scrapy
+from scrapy.linkextractors.sgml import SgmlLinkExtractor
 from scrapy.spider import CrawlSpider, Rule
+from scrapy.selector import Selector
 from netshadow.items import NetshadowItem
 
 
@@ -21,16 +22,27 @@ class NetshadowSpider(CrawlSpider):
         pass
 
     name = "netshadow"
-    allowed_domains = ["qq.com", "iwhgao.com"]
+    allowed_domains = ["qq.com"]
     start_urls = [
         "http://www.qq.com/",
-        "http://www.iwhgao.com/"
     ]
 
-    def parse(self, response):
-        for sel in response.xpath('//ul/li'):
-            item = NetshadowItem()
-            item['title'] = sel.xpath('a/text()').extract()
-            item['link'] = sel.xpath('a/@href').extract()
-            item['desc'] = sel.xpath('text()').extract()
-            yield item
+    rules = [
+        Rule(SgmlLinkExtractor(allow=('a/[0-9]+/[0-9]+\.htm'),
+                               restrict_xpaths=('//div[@class="C-Main-Article-QQ"]')),
+             callback='parse_item',
+             follow=True)
+    ]
+
+    def parse_item(self, response):
+        item = NetshadowItem()
+        sel = Selector(response)
+        link = str(response.url)
+        title = sel.xpath('//div[@class="hd"]/h1/text()').extract()
+        content = sel.xpath('//div[@id="Cnt-Main-Article-QQ"]/p/text()').extract()
+
+        item['content'] = [n.encode('utf-8') for n in content]
+        item['title'] = [n.encode('utf-8') for n in title]
+        item['link'] = link.encode('utf-8')
+        yield item
+

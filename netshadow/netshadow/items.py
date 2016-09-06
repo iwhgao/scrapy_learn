@@ -9,6 +9,13 @@ import scrapy
 
 
 class NetshadowItem(scrapy.Item):
+    """Item类"""
+
+    # 文章的标题
     title = scrapy.Field()
+
+    # 文章的链接
     link = scrapy.Field()
-    desc = scrapy.Field()
+
+    # 文章的内容
+    content = scrapy.Field()

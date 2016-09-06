@@ -68,6 +68,10 @@ ROBOTSTXT_OBEY = True
 #    'netshadow.pipelines.SomePipeline': 300,
 #}
 
+ITEM_PIPELINES = {
+    'netshadow.pipelines.MysqlStorePipeline': 100,
+}
+
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -88,3 +92,10 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+# start MySQL database configure setting
+MYSQL_HOST = 'localhost'
+MYSQL_DBNAME = 'qq_scrapy'
+MYSQL_USER = 'root'
+MYSQL_PASSWD = ''
+# end of MySQL database configure setting
