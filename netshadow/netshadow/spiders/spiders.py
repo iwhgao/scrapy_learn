@@ -11,10 +11,9 @@
 @time: 2016/9/2 21:21
 """
 
-from scrapy.linkextractors.sgml import SgmlLinkExtractor
+import scrapy
 from scrapy.spiders import CrawlSpider, Rule
-from scrapy.selector import Selector
-from netshadow.items import NetshadowItem
+from scrapy.linkextractors import LinkExtractor
 
 
 class NetshadowSpider(CrawlSpider):
@@ -27,14 +26,16 @@ class NetshadowSpider(CrawlSpider):
         "http://news.qq.com/a/20160905/052006.htm",
     ]
 
-    #rules = [
-    #    Rule(SgmlLinkExtractor(allow=('a/[0-9]+/[0-9]+\.htm'),
-    #                           restrict_xpaths=('//div[@class="C-Main-Article-QQ"]')),
-    #         callback='parse_item',
-    #         follow=True)
-    #]
+    rules = (
+        # Extract links matching 'category.php' (but not matching 'subsection.php')
+        # and follow links from them (since no callback means follow=True by default).
+        Rule(LinkExtractor(allow=('\.htm',), deny=('subsection\.php',))),
 
-    def parse(self, response):
+        # Extract links matching 'item.php' and parse them with the spider's method parse_item
+        Rule(LinkExtractor(allow=('\.htm',)), callback='parse_item', follow=True),
+    )
+
+    def parse_item(self, response):
         item = NetshadowItem()
         sel = Selector(response)
         link = str(response.url)
