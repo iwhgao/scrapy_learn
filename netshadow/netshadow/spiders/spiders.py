@@ -23,16 +23,16 @@ class NetshadowSpider(CrawlSpider):
     name = "netshadow"
     allowed_domains = ["qq.com"]
     start_urls = [
-        "http://news.qq.com/a/20160905/052006.htm",
+        "http://news.qq.com/",
     ]
 
     rules = (
         # Extract links matching 'category.php' (but not matching 'subsection.php')
         # and follow links from them (since no callback means follow=True by default).
-        Rule(LinkExtractor(allow=('\.htm',), deny=('subsection\.php',))),
+        Rule(LinkExtractor(allow=('[0-9]+/[0-9]+/\.htm$',), deny=('subsection\.php',))),
 
         # Extract links matching 'item.php' and parse them with the spider's method parse_item
-        Rule(LinkExtractor(allow=('\.htm',)), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=('[0-9]+/[0-9]+/\.htm$',)), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
