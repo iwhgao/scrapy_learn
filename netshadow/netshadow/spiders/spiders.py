@@ -24,7 +24,7 @@ class NetshadowSpider(CrawlSpider):
     name = "netshadow"
     allowed_domains = ["qq.com"]
     start_urls = [
-        "http://www.qq.com/",
+        "http://news.qq.com/a/20160905/052006.htm",
     ]
 
     #rules = [
