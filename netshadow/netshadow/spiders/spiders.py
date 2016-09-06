@@ -34,7 +34,7 @@ class NetshadowSpider(CrawlSpider):
     #         follow=True)
     #]
 
-    def parse_item(self, response):
+    def parse(self, response):
         item = NetshadowItem()
         sel = Selector(response)
         link = str(response.url)
