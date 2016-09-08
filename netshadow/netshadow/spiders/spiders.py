@@ -25,13 +25,23 @@ class NetshadowSpider(CrawlSpider):
     allowed_domains = ["qq.com"]
     start_urls = [
         "http://news.qq.com/",
+        "http://tech.qq.com/",
+        "http://finance.qq.com/",
+        "http://mil.qq.com/",
+        "http://sports.qq.com/",
+        "http://ent.qq.com/",
+        "http://health.qq.com",
+        "http://auto.qq.com/"
     ]
 
     yesterday_date = str(date.today() + timedelta(days=-1)).replace('-', '')
 
     rules = (
-        Rule(LinkExtractor(allow=('a/%s/\d+\.htm$' % yesterday_date,)), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=('a/%s/\d+\.htm' % yesterday_date,)), callback='parse_item', follow=True),
     )
+
+    def parse_start_url(self, response):
+        return self.parse_item(response)
 
     def parse_item(self, response):
         for sel in response.xpath('//div[@id="C-Main-Article-QQ"]'):
@@ -40,12 +50,12 @@ class NetshadowSpider(CrawlSpider):
             title = sel.xpath('.//div[@class="hd"]/h1/text()').extract()
             content = sel.xpath('.//div[@id="Cnt-Main-Article-QQ"]/p/text()').extract()
 
-            m = re.findall(r'://(.*?)\.qq\.com', link)
+            m = re.findall(r'://(www)?\.?(.*?)\.qq\.com', link)
 
-            if m:
+            if m and m[0][1] != '':
                 item['content'] = " ".join([n.encode('utf-8') for n in content])
                 item['title'] = " ".join([n.encode('utf-8') for n in title])
                 item['link'] = link.encode('utf-8')
                 item['date'] = self.yesterday_date
-                item['field'] = m[0]
+                item['field'] = m[0][1]
                 yield item
