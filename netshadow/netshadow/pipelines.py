@@ -46,13 +46,11 @@ class MysqlStorePipeline(object):
 		ret = conn.fetchone()
 
 		if ret:
-			conn.execute(
-				"update qq_article set title = '%s', content = '%s', link = '%s', field = '%s', date_str= '%s' where linkmd5id = '%s'",
-				(item['title'], item['content'], item['link'], item['field'], item['date'], linkmd5id))
+			conn.execute("update qq_article set title = %s, content = %s, link = %s, field = %s, date_str= %s where linkmd5id = %s",
+						 (item['title'], item['content'], item['link'], item['field'], item['date'], linkmd5id))
 		else:
-			conn.execute(
-				"insert into qq_article(linkmd5id, title, link, content, field, date_str) values('%s', '%s', '%s', '%s', '%s', '%s')",
-				(linkmd5id, item['title'], item['link'], item['content'], item['field'], item['date']))
+			conn.execute("insert into qq_article(linkmd5id, title, link, content, field, date_str) values(%s, %s, %s, %s, %s, %s)",
+						 (linkmd5id, item['title'], item['link'], item['content'], item['field'], item['date']))
 
 	# 获取url的md5编码
 	def _get_linkmd5id(self, item):
