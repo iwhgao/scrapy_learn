@@ -11,6 +11,7 @@
 @time: 2016/9/2 21:21
 """
 
+import re
 from scrapy import Selector
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
@@ -39,7 +40,12 @@ class NetshadowSpider(CrawlSpider):
             title = sel.xpath('.//div[@class="hd"]/h1/text()').extract()
             content = sel.xpath('.//div[@id="Cnt-Main-Article-QQ"]/p/text()').extract()
 
-            item['content'] = " ".join([n.encode('utf-8') for n in content])
-            item['title'] = " ".join([n.encode('utf-8') for n in title])
-            item['link'] = link.encode('utf-8')
-            yield item
+            m = re.findall(r'://(.*?)\.qq\.com', link)
+
+            if m:
+                item['content'] = " ".join([n.encode('utf-8') for n in content])
+                item['title'] = " ".join([n.encode('utf-8') for n in title])
+                item['link'] = link.encode('utf-8')
+                item['date'] = self.yesterday_date
+                item['field'] = m[0]
+                yield item
