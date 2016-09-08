@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS qq_scrapy;
 CREATE DATABASE qq_scrapy DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE qq_scrapy;
 CREATE TABLE `qq_article` (
