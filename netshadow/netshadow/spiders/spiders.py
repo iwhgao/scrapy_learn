@@ -15,6 +15,7 @@ from scrapy import Selector
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from netshadow.items import NetshadowItem
+form datetime import date, timedelta
 
 
 class NetshadowSpider(CrawlSpider):
@@ -25,9 +26,10 @@ class NetshadowSpider(CrawlSpider):
         "http://news.qq.com/a/20160907/003042.htm",
     ]
 
+    yesterday_date = str(date.today() + timedelta(days=-1))
+
     rules = (
-        Rule(LinkExtractor(allow=('\d+\.htm$',), deny=('subsection\.php',))),
-        Rule(LinkExtractor(allow=('\d+\.htm$',)), callback='parse_item', follow=True)
+        Rule(LinkExtractor(allow=('/%s/\d+\.htm$' % yesterday_date,)), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
