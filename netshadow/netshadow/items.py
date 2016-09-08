@@ -19,3 +19,9 @@ class NetshadowItem(scrapy.Item):
 
     # 文章的内容
     content = scrapy.Field()
+
+    # 文章的日期
+    date = scrapy.Field()
+
+    # 文章的分类
+    field = scrapy.Field()

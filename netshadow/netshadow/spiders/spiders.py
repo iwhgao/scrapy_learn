@@ -26,20 +26,20 @@ class NetshadowSpider(CrawlSpider):
         "http://news.qq.com/",
     ]
 
-    yesterday_date = str(date.today() + timedelta(days=-1))
+    yesterday_date = str(date.today() + timedelta(days=-1)).replace('-', '')
 
     rules = (
         Rule(LinkExtractor(allow=('a/%s/\d+\.htm$' % yesterday_date,)), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
-        item = NetshadowItem()
-        sel = Selector(response)
-        link = str(response.url)
-        title = sel.xpath('//div[@class="hd"]/h1/text()').extract()
-        content = sel.xpath('//div[@id="Cnt-Main-Article-QQ"]/p/text()').extract()
+        for sel in response.xpath('//div[@id="C-Main-Article-QQ"]'):
+            item = NetshadowItem()
+            link = str(response.url)
+            title = sel.xpath('.//div[@class="hd"]/h1/text()').extract()
+            content = sel.xpath('.//div[@id="Cnt-Main-Article-QQ"]/p/text()').extract()
 
-        item['content'] = [n.encode('utf-8') for n in content]
-        item['title'] = [n.encode('utf-8') for n in title]
-        item['link'] = link.encode('utf-8')
-        yield item
+            item['content'] = " ".join([n.encode('utf-8') for n in content])
+            item['title'] = " ".join([n.encode('utf-8') for n in title])
+            item['link'] = link.encode('utf-8')
+            yield item
