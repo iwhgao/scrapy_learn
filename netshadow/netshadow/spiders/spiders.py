@@ -34,7 +34,7 @@ class NetshadowSpider(CrawlSpider):
         "http://auto.qq.com/"
     ]
 
-    yesterday_date = str(date.today() + timedelta(days=-1)).replace('-', '')
+    today = str(date.today()).replace('-', '')
 
     rules = (
         Rule(LinkExtractor(allow=('a/%s/\d+\.htm' % yesterday_date,)), callback='parse_item', follow=True),
