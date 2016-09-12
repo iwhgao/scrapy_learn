@@ -45,7 +45,7 @@ def get_conn_cur():
 def get_all_articles(cur):
 	"""获取所有文章"""
 
-	cur.execute("SELECT field, content FROM qq_article WHERE length(trim(content))>10;")
+	cur.execute("SELECT field, content FROM qq_article WHERE length(trim(content))>10 LIMIT 20;")
 	data = cur.fetchall()
 	return data
 
@@ -57,4 +57,5 @@ def close_conn(conn):
 if __name__ == '__main__':
 	conn, cur = get_conn_cur()
 	data = get_all_articles(cur)
+	print data
 	close_conn(conn)

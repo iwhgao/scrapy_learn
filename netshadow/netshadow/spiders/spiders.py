@@ -22,13 +22,23 @@ from datetime import date, timedelta
 class NetshadowSpider(CrawlSpider):
 
     name = "netshadow"
-    allowed_domains = ["qq.com"]
+    allowed_domains = ["news.qq.com",
+                       "tech.qq.com",
+                       "finance.qq.com",
+                       "mil.qq.com",
+                       "sports.qq.com",
+                       "edu.qq.com",
+                       "ent.qq.com",
+                       "health.qq.com",
+                       "auto.qq.com"]
+
     start_urls = [
         "http://news.qq.com/",
         "http://tech.qq.com/",
         "http://finance.qq.com/",
         "http://mil.qq.com/",
         "http://sports.qq.com/",
+        "http://edu.qq.com",
         "http://ent.qq.com/",
         "http://health.qq.com",
         "http://auto.qq.com/"
@@ -58,4 +68,5 @@ class NetshadowSpider(CrawlSpider):
                 item['link'] = link.encode('utf-8')
                 item['date'] = self.yesterday_date
                 item['field'] = m[0][1]
-                yield item
+				if item['content'].strip() != '':
+	                yield item
