@@ -47,7 +47,7 @@ class NetshadowSpider(CrawlSpider):
     today = str(date.today()).replace('-', '')
 
     rules = (
-        Rule(LinkExtractor(allow=('a/%s/\d+\.htm' % yesterday_date,)), callback='parse_item', follow=True),
+        Rule(LinkExtractor(allow=('a/%s/\d+\.htm' % today,)), callback='parse_item', follow=True),
     )
 
     def parse_start_url(self, response):
@@ -66,7 +66,7 @@ class NetshadowSpider(CrawlSpider):
                 item['content'] = " ".join([n.encode('utf-8') for n in content])
                 item['title'] = " ".join([n.encode('utf-8') for n in title])
                 item['link'] = link.encode('utf-8')
-                item['date'] = self.yesterday_date
+                item['date'] = self.today
                 item['field'] = m[0][1]
-				if item['content'].strip() != '':
-	                yield item
+                if item['content'].strip() != '':
+                    yield item
