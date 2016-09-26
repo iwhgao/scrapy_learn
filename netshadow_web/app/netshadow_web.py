@@ -3,8 +3,20 @@
 
 from flask import *
 
+import sys
+import MySQLdb
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'some_secret'
+app.config.from_pyfile('default_config.py')
+
+conn = MySQLdb.connect(host=app.config['DB_HOST'],
+					   user=app.config['DB_USER'],
+					   passwd=app.config['DB_PWD'],
+					   charset=app.config['DB_CHARSET'])
 
 
 @app.errorhandler(404)
@@ -58,15 +70,14 @@ def show_data():
 	if not session.get('logged_in'):
 		return redirect(url_for('login'))
 
-	import MySQLdb
-	conn = MySQLdb.connect(host='localhost', user='root', passwd='')
-	conn.select_db('opensns');
+	conn.select_db(app.config['DB_NAME']);
 	cursor = conn.cursor()
 	cursor.execute("select * from ocenter_config limit 20")
-	data = cursor.fetchone()
+	data = cursor.fetchall()
 	cursor.close()
-	conn.close()
-	print data
+	# conn.close()
+	return render_template('showdata.html', rowdata=data, cols=range(len(data[0])))
+
 
 if __name__ == "__main__":
 	app.run(debug=True)
