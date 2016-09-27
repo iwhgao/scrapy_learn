@@ -65,17 +65,16 @@ def index():
 	return render_template('index.html')
 
 
-@app.route("/showdata")
-def show_data():
+@app.route("/showdata/<ds>")
+def show_data(ds):
 	if not session.get('logged_in'):
 		return redirect(url_for('login'))
 
 	conn.select_db(app.config['DB_NAME']);
 	cursor = conn.cursor()
-	cursor.execute("select * from ocenter_config limit 20")
+	cursor.execute("select * from qq_article where date_str='{0}' limit 20".format(ds))
 	data = cursor.fetchall()
 	cursor.close()
-	# conn.close()
 	return render_template('showdata.html', rowdata=data, cols=range(len(data[0])))
 
 
